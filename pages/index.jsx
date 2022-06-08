@@ -28,6 +28,7 @@ export default function Index() {
       <Cabecalho />
       {/* <Componente {...props} />; */}
       <Rodape />
+      <h1>home</h1>
     </>
   );
 }

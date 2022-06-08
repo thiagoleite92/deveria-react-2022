@@ -4,47 +4,52 @@ import logoHorizontalImg from '../../public/imagens/logoHorizontal.svg';
 import imagemLupa from '../../public/imagens/lupa.svg';
 import Navegacao from './Navegacao';
 import ResultadoPesquisa from './ResultadoPesquisa';
+import UsuarioService from '../../services/UsuarioService';
+import { useRouter } from 'next/router';
+
+const usuarioService = new UsuarioService();
 
 export default function Cabecalho() {
   const [resultadoPesquisa, setResultadoPesquisa] = useState([]);
   const [termoPesquisado, setTermoPesquisado] = useState('');
+  const router = useRouter();
 
-  const aoPesquisar = (e) => {
+  const aoPesquisar = async (e) => {
     setTermoPesquisado(e.target.value);
     setResultadoPesquisa([]);
 
-    if (termoPesquisado.length < 3) {
+    if (e.target.value.length < 3) {
       return;
     }
 
-    setResultadoPesquisa([
-      {
-        avatar: '',
-        nome: 'THiago',
-        email: 'email@email.com',
-      },
-      {
-        avatar: '',
-        nome: 'THiago',
-        email: 'email@email.com',
-      },
-      {
-        avatar: '',
-        nome: 'THiago',
-        email: 'email@email.com',
-      },
-    ]);
+    try {
+      const { data } = await usuarioService.pesquisar(termoPesquisado);
+      setResultadoPesquisa(data);
+    } catch (error) {
+      alert('Error ao pesquisar usuário. ' + error?.response?.data?.erro);
+    }
   };
 
   const aoClicarResultadoPesquisa = (id) => {
-    console.log({ id });
+    setResultadoPesquisa([]);
+    setTermoPesquisado('');
+    router.push(`/perfil${id}`);
+  };
+
+  const redirecionarHome = () => {
+    router.push('/');
   };
 
   return (
     <header className="cabecalhoPrincipal">
       <div className="conteudoCabecalhoPrincipal">
         <div className="logoCabecalhoPrincipal">
-          <Image src={logoHorizontalImg} alt="logo devagram" layout="fill" />
+          <Image
+            onClick={redirecionarHome}
+            src={logoHorizontalImg}
+            alt="logo devagram"
+            layout="fill"
+          />
         </div>
 
         <div className="barraPesquisa">
