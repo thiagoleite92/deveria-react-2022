@@ -4,6 +4,8 @@ import Rodape from '../componentes/layout/Rodape';
 import Login from '../componentes/login';
 import UsuarioService from '../services/UsuarioService';
 
+import Feed from '../componentes/feed';
+
 const usuarioService = new UsuarioService();
 
 export default function Index() {
@@ -27,8 +29,8 @@ export default function Index() {
     <>
       <Cabecalho />
       {/* <Componente {...props} />; */}
+      <Feed />
       <Rodape />
-      <h1>home</h1>
     </>
   );
 }
