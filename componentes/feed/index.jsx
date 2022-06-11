@@ -8,6 +8,7 @@ export default function Feed({ usuarioLogado, usuarioPerfil }) {
   const [listaDePostagens, setListaDePostagens] = useState([]);
 
   // useEffect(() => {
+  //   setListaDePostagens([]);
   //   const fetchPostagens = async () => {
   //     const { data } = await feedService.carregarPostagens(usuarioPerfil?._id);
   //     const postagensFormatadas = data.map((postagem) => ({

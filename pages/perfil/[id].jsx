@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import comAutorizacao from '../../../hoc/comAutorizacao';
-import Feed from '../../../componentes/feed';
+import comAutorizacao from '../../hoc/comAutorizacao';
+import Feed from '../../componentes/feed';
 import { useRouter } from 'next/router';
-import CabecalhoPerfil from '../../../componentes/cabecalhoPerfil';
-import UsuarioService from '../../../services/UsuarioService';
+import CabecalhoPerfil from '../../componentes/cabecalhoPerfil';
+import UsuarioService from '../../services/UsuarioService';
 
 const usuarioService = new UsuarioService();
 
@@ -22,6 +22,7 @@ function Perfil() {
   //   const obterPerfil = async (idUsuario) => {
   //     try {
   //       const { data } = await usuarioService.obterPerfil(idUsuario);
+  //       estaNoPerfilPessoal() ? usuarioLogado.id : idUsuario;
   //       return data;
   //     } catch (error) {
   //       alert(`Erro ao obter perfil do usuário`);
@@ -30,9 +31,17 @@ function Perfil() {
   //   obterPerfil(router.query.id);
   // }, [router.query.id]);
 
+  const estaNoPerfilPessoal = () => {
+    return router.query.id === 'eu';
+  };
+
   return (
     <div className="paginaPerfil">
-      <CabecalhoPerfil titulo={usuario} />
+      <CabecalhoPerfil
+        usuarioLogado={usuarioLogado}
+        usuario={usuario}
+        estaNoPerfilPessoal={estaNoPerfilPessoal()}
+      />
       <Feed usuarioLogado={usuarioLogado} usuarioPerfil={usuario} />
     </div>
   );

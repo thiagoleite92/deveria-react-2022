@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import imgSetaEsquerda from '../../public/imagens/setaEsquerda.svg';
+import imgLogout from '../../public/imagens/logout.svg';
 
 import CabecalhoComAcoes from '../../componentes/cabecalhoComAcoes';
 import Botao from '../../componentes/botao';
 import Avatar from '../avatar';
 import UsuarioService from '../../services/UsuarioService';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const usuarioService = new UsuarioService();
 
@@ -17,19 +19,24 @@ const usuario = {
   segueEsseUsuario: true,
 };
 
-export default function CabecalhoPerfil() {
+export default function CabecalhoPerfil({ estaNoPerfilPessoal }) {
   const [estaSeguindoOUsuario, setEstaSeguindoOUsuario] = useState(false);
   const [quantidadeSeguidores, setQuantidadeSeguidores] = useState(1);
+
   const router = useRouter();
 
-  useEffect(() => {
-    if (!usuario) {
-      return;
-    }
-    setEstaSeguindoOUsuario(usuario.segueEsseUsuario);
-  }, [usuario]);
+  // useEffect(() => {
+  //   if (!usuario) {
+  //     return;
+  //   }
+  //   setEstaSeguindoOUsuario(usuario.segueEsseUsuario);
+  // }, [usuario]);
 
-  const obterTextoBotaoBotaoSeguir = () => {
+  const obterTextoBotaoPrincipal = () => {
+    if (estaNoPerfilPessoal) {
+      return 'Editar Perfil';
+    }
+
     if (estaSeguindoOUsuario) {
       return 'Deixar de seguir';
     }
@@ -37,17 +44,21 @@ export default function CabecalhoPerfil() {
     return 'Seguir';
   };
 
-  const obterCorBotaoSeguir = () => {
-    if (estaSeguindoOUsuario) {
+  const obterCorBotaoPrincipal = () => {
+    if (estaSeguindoOUsuario || estaNoPerfilPessoal) {
       return 'invertido';
     }
 
     return 'primaria';
   };
 
-  const manipularCliqueBotaoSeguir = async () => {
+  const manipularCliqueBotaoPrincipal = async () => {
+    if (estaNoPerfilPessoal) {
+      return router.push('/perfil/editar');
+    }
+
     try {
-      // await usuarioService.alternarSeguir(usuario._id);
+      await usuarioService.alternarSeguir(usuario._id);
       setEstaSeguindoOUsuario(!estaSeguindoOUsuario);
       setQuantidadeSeguidores(
         estaSeguindoOUsuario
@@ -63,12 +74,33 @@ export default function CabecalhoPerfil() {
     router.back();
   };
 
+  const logout = () => {
+    usuarioService.logout();
+    router.replace('/');
+  };
+
+  const obterElementoDaDireitaCabecalho = () => {
+    if (estaNoPerfilPessoal) {
+      return (
+        <Image
+          src={imgLogout}
+          alt="icone logout"
+          onClick={logout}
+          width={23}
+          height={23}
+        />
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="cabecalhoPerfil largura30pctDesktop">
       <CabecalhoComAcoes
-        iconeEsquerda={imgSetaEsquerda}
+        iconeEsquerda={estaNoPerfilPessoal ? null : imgSetaEsquerda}
         aoClicarAcaoEsquerda={aoClicarSetaEsquerda}
         titulo={usuario.nome}
+        elementoDireita={obterElementoDaDireitaCabecalho()}
       />
 
       <hr className="bordaCabecalhoPerfil" />
@@ -93,9 +125,9 @@ export default function CabecalhoPerfil() {
             </div>
           </div>
           <Botao
-            texto={obterTextoBotaoBotaoSeguir()}
-            cor={obterCorBotaoSeguir()}
-            manipularClique={manipularCliqueBotaoSeguir}
+            texto={obterTextoBotaoPrincipal()}
+            cor={obterCorBotaoPrincipal()}
+            manipularClique={manipularCliqueBotaoPrincipal}
           />
         </div>
       </div>
