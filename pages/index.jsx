@@ -6,6 +6,8 @@ import UsuarioService from '../services/UsuarioService';
 
 import Feed from '../componentes/feed';
 
+import Perfil from './perfil/[id]';
+
 const usuarioService = new UsuarioService();
 
 export default function Index() {
@@ -27,10 +29,11 @@ export default function Index() {
 
   return (
     <>
-      <Cabecalho />
+      {/* <Cabecalho /> */}
       {/* <Componente {...props} />; */}
-      <Feed />
-      <Rodape />
+      {/* <Feed /> */}
+      <Perfil />
+      {/* <Rodape /> */}
     </>
   );
 }
