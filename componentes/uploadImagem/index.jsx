@@ -21,12 +21,7 @@ export default function UploadImagem({
     referenciaInput?.current?.click();
   };
 
-  const aoAlterarImagem = () => {
-    if (!referenciaInput?.current?.files?.length) {
-      return;
-    }
-
-    const arquivo = referenciaInput?.current?.files[0];
+  const obterUrlDaImagemEAtualizarEstado = (arquivo) => {
     const fileReader = new FileReader();
 
     fileReader.readAsDataURL(arquivo);
@@ -38,10 +33,30 @@ export default function UploadImagem({
     };
   };
 
+  const aoAlterarImagem = async () => {
+    if (!referenciaInput?.current?.files?.length) {
+      return;
+    }
+
+    const arquivo = referenciaInput?.current?.files[0];
+    obterUrlDaImagemEAtualizarEstado(arquivo);
+  };
+
+  const aoSoltarImagem = (e) => {
+    e.preventDefault();
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const arquivo = e.dataTransfer.files[0];
+      obterUrlDaImagemEAtualizarEstado(arquivo);
+    }
+  };
+
   return (
     <div
       className={`uploadImagemContainer ${className} `}
       onClick={abrirSeletorDeArquivos}
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={aoSoltarImagem}
     >
       {imagemPreview && (
         <div className="imagemPreviewContainer">
