@@ -43,8 +43,10 @@ export default function Feed({ usuarioLogado, usuarioPerfil }) {
     //   )}
     // </div>
     <>
-      <Postagem />
-      <Postagem />
+      <div className="feedContainer largura30pctDesktop">
+        <Postagem />
+        <Postagem />
+      </div>
     </>
   );
 }

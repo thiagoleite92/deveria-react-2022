@@ -98,12 +98,12 @@ export default function CabecalhoPerfil({ estaNoPerfilPessoal }) {
     <div className="cabecalhoPerfil largura30pctDesktop">
       <CabecalhoComAcoes
         iconeEsquerda={estaNoPerfilPessoal ? null : imgSetaEsquerda}
-        aoClicarAcaoEsquerda={aoClicarSetaEsquerda}
+        aoClicarElementoEsquerda={aoClicarSetaEsquerda}
         titulo={usuario.nome}
         elementoDireita={obterElementoDaDireitaCabecalho()}
       />
 
-      <hr className="bordaCabecalhoPerfil" />
+      <hr className="linhaDivisoria" />
 
       <div className="statusPerfil">
         <Avatar src={usuario.avatar} />
