@@ -105,7 +105,7 @@ export default function Postagem() {
   };
 
   return (
-    <div>
+    <div className="postagem">
       <Link href={`/perfil/${usuario.id}`}>
         <section className="cabecalhoPostagem">
           <Avatar src={usuario.avatar} />
